@@ -43,16 +43,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  // Check for existing token on mount
+  // Check for existing token on mount and validate it
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      // For now, just set loading to false
-      // TODO: Implement proper token validation
-      setLoading(false)
-    } else {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        try {
+          // Validate token and get user data
+          const response = await authAPI.getProfile()
+          setUser(response.data.user)
+        } catch (error) {
+          // Token is invalid, remove it
+          localStorage.removeItem('token')
+          setUser(null)
+        }
+      }
       setLoading(false)
     }
+    
+    checkAuth()
   }, [])
 
   const login = async (email: string, password: string) => {
@@ -85,11 +94,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem('token')
-    setUser(null)
-    toast.success('Logged out successfully')
-    navigate('/')
+  const logout = async () => {
+    try {
+      // Call logout API to invalidate token on server
+      await authAPI.logout()
+    } catch (error) {
+      // Even if API call fails, continue with local logout
+      console.warn('Logout API call failed:', error)
+    } finally {
+      // Always clear local storage and state
+      localStorage.removeItem('token')
+      setUser(null)
+      toast.success('Logged out successfully')
+      navigate('/')
+    }
   }
 
   const value = {
