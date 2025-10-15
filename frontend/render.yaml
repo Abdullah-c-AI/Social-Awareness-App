@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: social-awareness-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://social-awareness-backend.onrender.com
