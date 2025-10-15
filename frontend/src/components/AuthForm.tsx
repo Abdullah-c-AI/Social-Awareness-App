@@ -7,6 +7,17 @@ interface AuthFormProps {
   loading?: boolean
 }
 
+interface SubmitData {
+  name: string
+  email: string
+  password: string
+  role: string
+  businessName?: string
+  businessWebsite?: string
+  businessLogoUrl?: string
+  businessDescription?: string
+}
+
 const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, loading = false }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -76,7 +87,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, loading = false }) 
           password: formData.password
         })
       } else {
-        const submitData = {
+        const submitData: SubmitData = {
           name: formData.name,
           email: formData.email,
           password: formData.password,
@@ -293,300 +304,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, loading = false }) 
     </div>
   )
 }
-
-export default AuthForm
-
-
-
-              {formData.role === 'business' && (
-
-                <>
-
-                  <div>
-
-                    <label htmlFor="businessName" className="block text-sm font-medium text-gray-700 mb-1">
-
-                      Business Name
-
-                    </label>
-
-                    <input
-
-                      type="text"
-
-                      id="businessName"
-
-                      name="businessName"
-
-                      value={formData.businessName}
-
-                      onChange={handleChange}
-
-                      className={`input-field ${errors.businessName ? 'border-red-500' : ''}`}
-
-                      placeholder="Enter business name"
-
-                    />
-
-                    {errors.businessName && <p className="text-red-500 text-sm mt-1">{errors.businessName}</p>}
-
-                  </div>
-
-
-
-                  <div>
-
-                    <label htmlFor="businessWebsite" className="block text-sm font-medium text-gray-700 mb-1">
-
-                      Business Website
-
-                    </label>
-
-                    <input
-
-                      type="url"
-
-                      id="businessWebsite"
-
-                      name="businessWebsite"
-
-                      value={formData.businessWebsite}
-
-                      onChange={handleChange}
-
-                      className={`input-field ${errors.businessWebsite ? 'border-red-500' : ''}`}
-
-                      placeholder="https://yourbusiness.com"
-
-                    />
-
-                    {errors.businessWebsite && <p className="text-red-500 text-sm mt-1">{errors.businessWebsite}</p>}
-
-                  </div>
-
-
-
-                  <div>
-
-                    <label htmlFor="businessLogoUrl" className="block text-sm font-medium text-gray-700 mb-1">
-
-                      Business Logo URL
-
-                    </label>
-
-                    <input
-
-                      type="url"
-
-                      id="businessLogoUrl"
-
-                      name="businessLogoUrl"
-
-                      value={formData.businessLogoUrl}
-
-                      onChange={handleChange}
-
-                      className={`input-field ${errors.businessLogoUrl ? 'border-red-500' : ''}`}
-
-                      placeholder="https://yourbusiness.com/logo.png"
-
-                    />
-
-                    {errors.businessLogoUrl && <p className="text-red-500 text-sm mt-1">{errors.businessLogoUrl}</p>}
-
-                  </div>
-
-
-
-                  <div>
-
-                    <label htmlFor="businessDescription" className="block text-sm font-medium text-gray-700 mb-1">
-
-                      Business Description
-
-                    </label>
-
-                    <textarea
-
-                      id="businessDescription"
-
-                      name="businessDescription"
-
-                      value={formData.businessDescription}
-
-                      onChange={handleChange}
-
-                      rows={3}
-
-                      className={`input-field ${errors.businessDescription ? 'border-red-500' : ''}`}
-
-                      placeholder="Describe your business..."
-
-                    />
-
-                    {errors.businessDescription && <p className="text-red-500 text-sm mt-1">{errors.businessDescription}</p>}
-
-                  </div>
-
-                </>
-
-              )}
-
-            </>
-
-          )}
-
-
-
-          <div>
-
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-
-              Email
-
-            </label>
-
-            <input
-
-              type="email"
-
-              id="email"
-
-              name="email"
-
-              value={formData.email}
-
-              onChange={handleChange}
-
-              className={`input-field ${errors.email ? 'border-red-500' : ''}`}
-
-              placeholder="Enter your email"
-
-            />
-
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-
-          </div>
-
-
-
-          <div>
-
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-
-              Password
-
-            </label>
-
-            <input
-
-              type="password"
-
-              id="password"
-
-              name="password"
-
-              value={formData.password}
-
-              onChange={handleChange}
-
-              className={`input-field ${errors.password ? 'border-red-500' : ''}`}
-
-              placeholder="Enter your password"
-
-            />
-
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-
-          </div>
-
-
-
-          {!isLogin && (
-
-            <div>
-
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-
-                Confirm Password
-
-              </label>
-
-              <input
-
-                type="password"
-
-                id="confirmPassword"
-
-                name="confirmPassword"
-
-                value={formData.confirmPassword}
-
-                onChange={handleChange}
-
-                className={`input-field ${errors.confirmPassword ? 'border-red-500' : ''}`}
-
-                placeholder="Confirm your password"
-
-              />
-
-              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
-
-            </div>
-
-          )}
-
-
-
-          <button
-
-            type="submit"
-
-            disabled={loading}
-
-            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-
-          >
-
-            {loading ? 'Processing...' : (isLogin ? 'Login' : 'Register')}
-
-          </button>
-
-        </form>
-
-
-
-        <div className="mt-6 text-center">
-
-          <p className="text-sm text-gray-600">
-
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
-
-            <Link 
-
-              to={isLogin ? "/register" : "/login"} 
-
-              className="text-primary-600 hover:text-primary-500 font-medium"
-
-            >
-
-              {isLogin ? 'Register here' : 'Login here'}
-
-            </Link>
-
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  )
-
-}
-
-
 
 export default AuthForm
 

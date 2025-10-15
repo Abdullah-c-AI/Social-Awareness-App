@@ -3,11 +3,19 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { campaignsAPI, businessAPI, adminAPI } from '../services/api'
 
+interface Campaign {
+  _id: string
+  title: string
+  status: string
+  participantsCount?: number
+  [key: string]: any
+}
+
 interface DashboardStats {
   totalCampaigns: number
   activeCampaigns: number
   totalParticipants: number
-  recentCampaigns: any[]
+  recentCampaigns: Campaign[]
 }
 
 const Dashboard: React.FC = () => {
@@ -44,24 +52,24 @@ const Dashboard: React.FC = () => {
 
   const fetchUserDashboard = async () => {
     const response = await campaignsAPI.getCampaigns()
-    const campaigns = response.data.campaigns
+    const campaigns = response.data.campaigns || []
     
     setStats({
       totalCampaigns: campaigns.length,
-      activeCampaigns: campaigns.filter(c => c.status === 'approved').length,
-      totalParticipants: campaigns.reduce((sum, c) => sum + c.participantsCount, 0),
+      activeCampaigns: campaigns.filter((c: Campaign) => c.status === 'approved').length,
+      totalParticipants: campaigns.reduce((sum: number, c: Campaign) => sum + (c.participantsCount || 0), 0),
       recentCampaigns: campaigns.slice(0, 5)
     })
   }
 
   const fetchBusinessDashboard = async () => {
     const response = await businessAPI.getCampaigns()
-    const campaigns = response.data.campaigns
+    const campaigns = response.data.campaigns || []
     
     setStats({
       totalCampaigns: campaigns.length,
-      activeCampaigns: campaigns.filter(c => c.status === 'approved').length,
-      totalParticipants: campaigns.reduce((sum, c) => sum + c.participantsCount, 0),
+      activeCampaigns: campaigns.filter((c: Campaign) => c.status === 'approved').length,
+      totalParticipants: campaigns.reduce((sum: number, c: Campaign) => sum + (c.participantsCount || 0), 0),
       recentCampaigns: campaigns.slice(0, 5)
     })
   }
@@ -72,13 +80,13 @@ const Dashboard: React.FC = () => {
       adminAPI.getCampaigns({ status: 'pending' })
     ])
     
-    const campaigns = campaignsResponse.data.campaigns
-    const pendingCampaigns = pendingResponse.data.campaigns
+    const campaigns = campaignsResponse.data.campaigns || []
+    const pendingCampaigns = pendingResponse.data.campaigns || []
     
     setStats({
       totalCampaigns: campaigns.length,
-      activeCampaigns: campaigns.filter(c => c.status === 'approved').length,
-      totalParticipants: campaigns.reduce((sum, c) => sum + c.participantsCount, 0),
+      activeCampaigns: campaigns.filter((c: Campaign) => c.status === 'approved').length,
+      totalParticipants: campaigns.reduce((sum: number, c: Campaign) => sum + (c.participantsCount || 0), 0),
       recentCampaigns: [...pendingCampaigns, ...campaigns.slice(0, 3)]
     })
   }
