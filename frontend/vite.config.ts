@@ -14,6 +14,11 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 10000,
+    host: true,
+    allowedHosts: ['social-awareness-app-sl4r.onrender.com', 'localhost', '0.0.0.0']
+  },
   build: {
     outDir: 'dist',
     sourcemap: false,
