@@ -119,9 +119,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, loading = false }) 
   }
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto px-4 sm:px-0">
       <div className="card">
-        <h2 className="text-2xl font-bold text-center mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
           {isLogin ? 'Login' : 'Register'}
         </h2>
         
